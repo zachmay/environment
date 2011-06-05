@@ -68,29 +68,31 @@ fi
 # Set SVN_EDITOR
 SVN_EDITOR=vi
 
+HOME_BIN=~/bin
+
 # Add personal entries to PATH
-PATH=$PATH:/home/zmay/bin
+PATH=$PATH:$HOME_BIN
 
 # Zach's aliases!
 alias vi='vi -p'
 
-. /home/zmay/bin/bash-preexec.sh
+#. $HOME_BIN/bash-preexec.sh
 
-set_xterm_title () {
-    local title="$1"
-    case "$TERM" in
-        screen)
-            echo -ne "\033k$title\033\\"
-            ;;
-    esac
-}
+#set_xterm_title () {
+#    local title="$1"
+#    case "$TERM" in
+#        screen)
+#            echo -ne "\033k$title\033\\"
+#            ;;
+#    esac
+#}
 
-precmd () {
-    set_xterm_title "`dirs -0` $PROMPTCHAR"
-}
+#precmd () {
+#    set_xterm_title "`dirs -0` $PROMPTCHAR"
+#}
 
-preexec () {
-    set_xterm_title "$1 `dirs -0`"
-}
+#preexec () {
+#    set_xterm_title "$1 `dirs -0`"
+#}
 
-preexec_install
+#preexec_install
