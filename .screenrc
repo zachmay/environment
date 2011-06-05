@@ -40,8 +40,6 @@
   bind ^h
   bind h
   bind 'K' kill
-  bind 'I' login on
-  bind 'O' login off
   bind '}' history
   register [ "\033:se noai\015a"
   register ] "\033:se ai\015a"
@@ -66,9 +64,8 @@ logfile /home/zach/logs/screen_%Y-%m-%d_%0c
 bindkey -k F1 prev
 bindkey -k F2 next
 
-screen -t 0
-screen -t 1
-screen -t 2
+screen -t Editor
+screen -t Files
 
 shelltitle "$ |bash"
 
