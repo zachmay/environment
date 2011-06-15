@@ -73,6 +73,9 @@ HOME_BIN=~/bin
 # Add personal entries to PATH
 PATH=$PATH:$HOME_BIN
 
+# Point to proper vimrc
+MYVIMRC=~/.vim/.vimrc
+
 # Zach's aliases!
 alias vi='vi -p'
 
