@@ -448,8 +448,8 @@ else
         "hi VisualNos     guibg=#304a3d
         "TODO no nice greenish in console, 65 is closest. use full black instead,
         "although i like the green..!
-        hi Visual        guibg=#0f0f0f
-        hi VisualNos     guibg=#0f0f0f
+        hi Visual        guibg=#3f3f3f
+        hi VisualNos     guibg=#3f3f3f
         if &t_Co > 255
             hi Visual ctermbg=0
         endif

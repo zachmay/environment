@@ -69,9 +69,10 @@ fi
 SVN_EDITOR=vi
 
 HOME_BIN=~/bin
+CABAL_BIN=~/.cabal/bin
 
 # Add personal entries to PATH
-PATH=$PATH:$HOME_BIN
+PATH=$PATH:$HOME_BIN:$CABAL_BIN
 
 # Point to proper vimrc
 MYVIMRC=~/.vim/.vimrc
