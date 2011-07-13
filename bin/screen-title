@@ -1,0 +1,6 @@
+#!/bin/bash
+
+title="$1"
+
+echo -ne "\033k$title\033\134"
+

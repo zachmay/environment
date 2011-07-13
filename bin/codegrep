@@ -1,0 +1,10 @@
+#!/bin/bash 
+
+grep -Iirl \
+     --exclude-dir=.svn \
+     --exclude-dir=img \
+     --exclude-dir=images \
+     --exclude-dir=assets \
+     --exclude-dir=om \
+     --exclude-dir=feeds \
+     --exclude-dir=spotlight  "$1" * \
