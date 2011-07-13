@@ -40,8 +40,12 @@ endif
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
- if &t_Co > 2 || has("gui_running")
-   set t_Co=256
+ if &t_Co >= 256 || has("gui_running")
+   let g:zenburn_high_Contrast=1
+   colorscheme zenburn
+   syntax on
+   set nohlsearch
+ elseif &t_Co > 2
    colorscheme slate
    syntax on
    set nohlsearch
