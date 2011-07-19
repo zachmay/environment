@@ -21,7 +21,7 @@ if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
 fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
-export PS1="\u@\h [\w] $ "
+export PS1="\e[0;30m\u@\h [\w] $ "
 
 
 # Comment in the above and uncomment this below for a color prompt

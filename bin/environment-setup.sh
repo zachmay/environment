@@ -23,6 +23,7 @@ then
 else
     mkdir ~/.vim || echo "Could not create ~/.vim!"
     mkdir ~/.vim/backup || echo "Could not create ~/.vim/backup!"
+    mkdir ~/.vim/temp || echo "Could not create ~/.vim/temp!"
     ln -s $1/.vim/colors ~/.vim/colors || echo "Could not link ~/.vim/colors!!"
 fi
 
