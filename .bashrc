@@ -21,20 +21,14 @@ if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
 fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
-export PS1="\e[0;30m\u@\h [\w] $ "
+export PS1="\u@\h [\w] $ "
 
 
 # Comment in the above and uncomment this below for a color prompt
 #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 
 # If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD/$HOME/~}\007"'
-    ;;
-*)
-    ;;
-esac
+PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD/$HOME/~}\007"'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -80,23 +74,23 @@ MYVIMRC=~/.vim/.vimrc
 # Zach's aliases!
 alias vi='vi -p'
 
-#. $HOME_BIN/bash-preexec.sh
+. $HOME_BIN/bash-preexec.sh
 
-#set_xterm_title () {
-#    local title="$1"
-#    case "$TERM" in
-#        screen)
-#            echo -ne "\033k$title\033\\"
-#            ;;
-#    esac
-#}
+set_xterm_title () {
+    local title="$1"
+    case "$TERM" in
+        screen)
+            echo -ne "\033k$title\033\\"
+            ;;
+    esac
+}
 
-#precmd () {
-#    set_xterm_title "`dirs -0` $PROMPTCHAR"
-#}
+precmd () {
+    set_xterm_title "`dirs -0` $PROMPTCHAR"
+}
 
-#preexec () {
-#    set_xterm_title "$1 `dirs -0`"
-#}
+preexec () {
+    set_xterm_title "$1 `dirs -0`"
+}
 
-#preexec_install
+preexec_install
