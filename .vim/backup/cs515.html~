@@ -1,0 +1,244 @@
+<!DOCTYPE doctype>
+<html><head>
+                
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+                
+  
+  <meta name="GENERATOR" content="Mozilla/4.75 [en] 
+                  (X11; U; Linux 2.2.13-0.9 alpha) [Netscape]">
+  <title>Homework</title>
+</head>
+<body style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);" link="#0000ff" vlink="#800080">
+        
+<h2> Homework: Analysis of Algorithms, Fall 2010<br>
+
+</h2>
+
+Rules of the game: <b> You may not use outside sources to obtain solutions to 
+homework problems.  You may not look for answers on the world wide web. </b> 
+You may read outside sources to help you understand the general material we are 
+covering in the course, but you may not use outside sources to solve the homework 
+problems.  "Outside sources" includes other students at UK.  You may talk to other 
+members of the class about the course content, but you may not use other 
+students' solutions to the homework.  If you have any doubts about what is allowed, 
+ask your professor. 
+<p>  <b>All Homework is Due In Class at the Start of Class on the Due Date.
+Homework Handed in More Than Five Minutes After the Start of Class Will
+Not Be Accepted.</b>
+</p>
+
+ 
+<p>  </p>
+
+ 
+<h3> Assignments</h3>
+
+<ol>
+
+  <li> Read Chapters 1, 2, 3, 4<br>
+       Due September 8: Do problems: 
+       Page 52, 3.1-2, 3.1-4; Page 60, 3.2-1, 3.2-4; Page 61, 3-4dg, 3-5a.
+       <a href="cs515/sol-9-8-10.pdf">Solutions</a>
+  </li>
+  <li> Read Chapters 6, 7, 8.1, 9<br>
+       Due September 22: Do problems:
+       Page 29, 2.2-2; Page 39, 2.3-7: Page 39, 2-4; Page 92, 4.4-8; 
+       Page 96, 4.5-4; Page 107, 4-1c, 4-3b.
+       <a href="cs515/sol-9-22-10.pdf">Solutions</a>
+  </li>
+   <li> Read Chapters 12, 13, 18-21<br>
+       Due October 6: 
+       Page 184, 7.4-2; Page 185, 7-4; Page 153, 6.1-5 (and say why); 
+       Page 160, 6.4-5; Page 194, 8.1-3; Page 224, 9-2abcd. 
+       <a href="cs515/sol-10-6-10.pdf">Solutions</a>
+  </li>
+  <li> Read Chapters 20, 23<br>
+       Due October 20:
+       <a href="cs515/sol-10-20-10.pdf">Solutions</a>
+  </li>
+  <li> Read Chapters 25, 26, 31<br>
+       Due November 3: 
+       <a href="cs515/sol-11-3-10.pdf">Solutions</a>
+  </li>
+  <li> Read Chapters 15.3, 15.4, 32<br>
+       Due November 17: 
+       <a href="cs515/sol-11-17-10.pdf">Solutions</a>
+  </li>
+  <li> Read Chapters 34, 35<br>
+       Due December 8: 
+       <a href="cs515/sol-12-8-10.pdf">Solutions</a>
+   </li>
+
+ </ol>
+
+<span style="font-weight: bold;"><br>
+</span>
+<h3>Guidelines </h3>
+
+   
+<p><b>Problems</b> are worth <b>0 - 10 points. </b>
+Here is the gist of how points will be assigned: </p>
+
+   
+<dl>
+<dt>10 points </dt><dd>You did it just right. </dd>
+<dt>8-9 points </dt><dd>Relatively minor problems. </dd>
+<dt>5-7 points </dt><dd>Problems, but method (at least) essentially correct. 
+</dd>
+<dt>3-4 points </dt><dd>Wrong method, you completely misunderstood the problem, 
+or the grader was  unconvinced you understood what you were doing. </dd>
+<dt>1-2 points </dt><dd>Wrong method, and you didn't do that very well. </dd>
+<dt>0 points </dt><dd>couldn't find, <b>or could not read or follow</b>, your 
+answer. </dd>
+</dl>
+
+<p><b>Friendly suggestions to get better scores and or the benefit of the 
+doubt:</b></p>
+
+      
+<ul>
+  <big>
+      
+  </big><ul><big>
+  </big><li>Turn in something legible, with space between problems, and the
+problems in  the expected order. </li><big>
+  </big><li>Show steps. Doing so can reveal that your mistake was minor, which 
+is to your benefit. Not doing so can leave doubt that you understood the process
+you're  being asked to demonstrate. </li><big>
+  </big><li>Format:</li>
+ If you use multiple sheets of paper, staple them 
+together at the upper lefthand corner. Do not fold your homework. Print your 
+name clearly at the top of the first page, and underline the part of your name 
+by which the university alphabetizes you (usually your family name).<br>
+    <big><br>
+    <b> </b>   
+  </big></ul><big>
+   
+  </big>
+</ul>
+
+<center style="font-family: helvetica,arial,sans-serif;">           <big> 
+</big><h1 style="font-family: times new roman,times,serif;"> Algorithm Design CS515 - Syllabus</h1><big>
+ </big>           </center>
+                         
+<center style="font-family: times new roman,times,serif;"><big>
+</big><p><big> <font size="+0"><big>Fall 2011; Tuesday, Thursday 12:30-1:45pm<br>
+
+</big></font>Whitehall Classroom Bldg-Rm.207-CB</big></p> </center>
+                        
+<p style="font-family: times new roman,times,serif;"><br>
+           <b> <a href="cs515-f10.html">Class Web Site</a></b></p>
+                    
+<p style="font-family: times new roman,times,serif;"><b>Instructor:</b> Professor Klapper, 307 Marksbury Building; phone -- x7-6743; e-mail: klapper at cs.uky.edu; 
+<a href="andy.html">Home page</a> </p>
+
+<p style="font-family: times new roman,times,serif;"><b>Office Hours: </b>
+11-12 Tuesday; 10-11 Thursday; 
+and by appointment.  E-mail questions are encouraged.</p>
+                       
+<p style="font-family: times new roman,times,serif;">
+<b>Course Description: </b><small><span style="font-family: times new roman,times,serif;"><big>The design and analysis of efficient
+algorithms and data structures for problems in sorting, searching, graph
+theory, combinatorial optimization, computational geometry, and algebraic 
+computation.<span style=""> </span>Emphasis on paradigms for design 
+and on rigorous analysis. Practical issues pertaining to efficient implementation 
+and performance measurements</big>.</span></small></p>
+                       
+<p style="font-family: times new roman,times,serif;">You are expected
+to be familiar with basic data structures (lists, trees, graphs),
+algorithms (searching, sorting), and models of computation such as in
+CS 315 (prerequisite). You should be familiar with discrete math as in
+CS 275 (prerequisite
+for CS 315), including recurrence relations; mathematical induction;
+basic probability; basic counting techniques; relations; graphs; and
+trees. You should be familiar with basic calculus (derivatives, limits,
+L'Hospital's rule, integration, log and exponential functions). </p>
+                       
+<p style="font-family: times new roman,times,serif;"><b>Textbook:</b> ``Introduction To Algorithms,'' by Cormen, Leiserson, Rivest, and Stein; McGraw Hill, Third Edition. ISBN-10: 0-262-03384-4; ISBN-13: 978-0-262-03384-8  
+<a href="http://mitpress.mit.edu/algorithms/">web page</a><br> </p>
+                 
+<p style="font-family: times new roman,times,serif;">
+<b>Exams and Homework</b>: There will be a <b>Midterm exam: October 18</b> ; 
+a <b>Final exam:</b> Tuesday, December 13, 10:30am - 12:30pm; 
+and frequent homeworks. Homeworks will be
+due <b> at the start of class </b> usually two weeks from the day they are assigned. They will generally
+consist of designing algorithms; proving algorithms are correct; analyzing the performance of algorithms; 
+and developing the mathematical tools for these activities. There will be no programming
+assignments. <b>Homework handed in more than five minutes after the start of the class when it is due will not be accepted.</b>  Assignments must be legible and grammatical. Copying of homework from other 
+students or from other sources is strictly prohibited. Obtaining a solution from another source without 
+citing the source is plagiarism. You may not use the internet to solve homework problems. Doing so is plagiarism. <a href="plagiarism.html">Detailed Plagiarism
+Statement.</a> You are strongly encouraged to visit me in my office hours or ask for help by e-mail if you
+are stuck on homework problems, or even if you just want to talk about something. You don't need an appointment to come to my regularly scheduled hours.
+Attendance in class is very strongly encouraged and is part of the grade.  You will make every reasonable effort to arrive before 
+class begins.  Cell phones must be turned off before class starts.  Laptops or similar devices may be used only if you sit in the last row of the classroom.  </p>
+                       
+<p style="font-family: times new roman,times,serif;"><b>Grades</b>: Course grades are based on: 
+attendance - 10%; homework - 25%; midterm - 25%; final exam - 40%. <br>
+ Letter grades are assigned by the scale: <br>
+ Graduate students: A: 80-100; B: 65-79; C:50-64; <br>
+ Undergraduates: A: 75-100; B: 60-74; C:45-59; D:35-44. </p>
+                      
+<p style="font-family: times new roman,times,serif;"><b> Outcomes and assessments</b>: The following are
+the stated learning outcomes for this course. These  will be assessed by
+a survey at the end of the semester, in compliance with  certification standards
+for academic Computer Science departments. &nbsp;A successful
+student will develop knowledge of various    mathematical  tools and algorithmic
+methods that are    applicable in computer science.   Specifically, students
+   will be able to: <br></p>
+
+<ul style="font-family: times new roman,times,serif;">
+    <li>Prove algorithms correct, </li>
+    <li>Analyze the computational complexity of algorithms, </li>
+    <li>Design algorithms for complex problems,</li>
+    <li>Select and apply the best algorithmic approach for practical problems. </li> 
+</ul>
+
+<p style="font-family: times new roman,times,serif;"><b><font size="+1"><br>
+Approximate Syllabus:</font></b> </p>
+                                            
+<p style="font-family: times new roman,times,serif;"><b>Intro and Review</b> 
+(August 25 - September 13): Chapters 1,2,3,4  <br>
+ 1. Time complexity<br>
+ 2. Big O notation. <br>
+ 3. Recurrences: first order linear, Fibonacci numbers, divide and conquer, etc.<br>
+ 4. Proofs of correctness </p>
+                                                 
+<p style="font-family: times new roman,times,serif;"><b>Searching and Sorting </b>
+(September 15 - 29):  Chapters 6-9,12,13,18-21.<br>
+ 1. Sorting -- radix, heap, merge, and quick sorts. <br>
+ 2. Searching (sequential, binary, tree), order statistics, lower bounds. <br>
+ 3. Advanced search structures (balanced trees, disjoint sets). <br></p>
+
+<p style="font-family: times new roman,times,serif;"><b>Graph Algorithms</b> 
+(October 4 - 27): Chapters 22-26. <br>
+ 1. Traversals. <br>
+ 2. Shortest paths. <br>
+ 3. Spanning trees.<br>
+ 4. Network flows and matching.<br>
+
+ <b><br> Midterm Exam: October 18 <br></b></p>
+
+<p style="font-family: times new roman,times,serif;"><b>Algebraic Algorithms</b> 
+(November 1 - 10): Chapter 31.<br>
+ 1. Euclidean algorithm. <br>
+ 2. Fast integer multiplication and modular exponentiation.   <br>
+ 3. Primality testing and applications to cryptography. <br>
+ 4. Matrix algebra. </p>
+                                           
+<p style="font-family: times new roman,times,serif;"><b>Strings, Sequences, and Dynamic Programming</b> 
+(November 15 - 22): Chapter 15.3,15.4,32. <br>
+ 1. String matching. <br>
+ 2. Substrings and subsequences. </p>
+                                        
+<p style="font-family: times new roman,times,serif;"><b>Relations Between Problems</b> 
+(November 29 - December 8): Chapters 36, 37.<br>
+ 1. Decision and optimization problems. <br>
+ 2. Reductions between problems, nondeterminism, NP vs. P, and NP-completeness. <br>
+ 3. Approximate solutions to hard problems.<br></p>
+
+<p style="font-family: times new roman,times,serif;"><b>FINAL EXAM: Tuesday December 13, 10:30am - 12:30pm</b><big> Whitehall Classroom Bldg-Rm.207-CB</big></p>
+
+</body></html>
+

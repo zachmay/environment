@@ -1,0 +1,11 @@
+#!/usr/bin/python
+
+import sys
+
+phrase = sys.argv[1]
+phrase_len = len(phrase)
+
+print "/" + "*" * (phrase_len + 4)
+print " * " + phrase + " *"
+print " " + "*" * (phrase_len + 4) + "/"
+

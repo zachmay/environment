@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cat data.json | python -m json.tool

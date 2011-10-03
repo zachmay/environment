@@ -1,0 +1,394 @@
+package com.cecentral {
+	
+	import com.base86.Tools;
+	import com.cecentral.event.*;
+	import com.cecentral.models.ChapterVO;
+	import com.cecentral.models.WebcastVO;
+	import com.cecentral.net.WebcastProxy;
+	import com.cecentral.utils.SceneUtil;
+	import com.cecentral.utils.assets.*;
+	import com.cecentral.utils.managers.WebcastManager;
+	import com.cecentral.views.Header;
+	import com.cecentral.views.MainStage;
+	import com.cecentral.views.scenes.*;
+	import com.greensock.*;
+	import com.greensock.plugins.*;
+	import com.yahoo.astra.fl.containers.BorderPane;
+	import com.yahoo.astra.layout.modes.BorderConstraints;
+	
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
+	import flash.events.Event;
+	import flash.geom.Rectangle;
+	import flash.system.Security;
+	import flash.utils.Dictionary;
+	
+	import net.hires.debug.Stats;
+	
+	import org.casalib.util.StageReference;
+	import org.osflash.signals.events.GenericEvent;
+	import org.osflash.signals.natives.NativeSignal;
+	
+	/**
+		The document class for Presenter application. 
+		@author Evan Tune
+		@author Zachary May
+		@author Selby
+		@author Winston Churchill
+		@see http://cecentral.com
+		@version 3.0
+	*/
+	public class Presenter extends BorderPane
+	{	
+		protected var bg:Background;
+		protected var header:Header;
+		protected var mainStage:MainStage;
+		protected var webcast:WebcastVO;
+		protected var historyBack:Array;
+		protected var historyForward:Array;
+		protected var currentChapter:ChapterVO;
+		protected var currentScene:PresenterScene;
+		protected var webcastProxy:WebcastProxy;
+		protected var loadingMessage:MessageScene;
+		protected var assetManager:AssetManager;
+		
+		/**
+			Creates a new Presenter.
+			@sends Event#stageResizeHandler - dispatched when stage is resized.
+		*/
+		public function Presenter()
+		{
+			super();
+			
+			//Setup API Proxies
+			webcastProxy = new WebcastProxy();
+			webcastProxy.success.add(onWebcastLoaded);
+			webcastProxy.failure.add(onWebcastLoadFailed);
+			webcastProxy.getWebcast(2265);
+
+			//Set the stage
+			if (stage)
+			{
+				stage.scaleMode = StageScaleMode.NO_SCALE;
+				stage.align = StageAlign.TOP_LEFT;
+				width = stage.stageWidth;
+				height = stage.stageHeight;
+				new NativeSignal(stage, Event.RESIZE).add(onStageResize);
+				StageReference.setStage(stage);
+			}
+
+			//Apply the styled background
+			bg = new Background();
+			bg.gradient.blendMode = "overlay";
+			setStyle("skin", bg);
+			TweenPlugin.activate([TintPlugin]);
+			
+			paddingTop = 10;
+			paddingBottom = 10;
+			paddingLeft = 10;
+			paddingRight = 10;
+			
+			//Configure the main panels
+			header = new Header();
+			mainStage = new MainStage();
+			mainStage.colorChange.add(tintBG)
+			configuration = [
+				{target:header, constraint:BorderConstraints.TOP},
+				{target:mainStage, constraint:BorderConstraints.CENTER},
+			    // {target:new Stats(), includeInLayout:false}
+			];
+			
+			//trace(mainStage.width, mainStage.height);
+			//trace(stage.stageWidth, stage.stageHeight);
+			
+			//Configure history management
+			historyBack = new Array();
+			historyForward = new Array();
+			
+			loadingMessage = new MessageScene("Loading...", "Loading Webcast", MessageScene.STATUS_WAIT);
+			enableAuxiliaryScene(loadingMessage);
+
+		}
+
+		/**
+			Tweens the application's background color.
+			0x2A3D4E Slate / 0x003f81 Blue / 0x112d50 Deep Blue / 0x2d164f Purple / 0x11501c Green
+			@param color: HEX value of background tint.
+		*/
+		protected function tintBG(color:Number = 0x003f81):void
+		{
+			TweenLite.to(bg.colorFill, .3, {tint:color, delay:.22});
+		}
+
+		/**
+			Updates application when stage is resized.
+			@param event: Event object.
+		*/
+		protected function onStageResize(event:Event):void
+		{
+			width = stage.stageWidth;
+			height = stage.stageHeight;
+			
+			if ( currentScene )
+			{
+				currentScene.resize(new Rectangle(0, 0, mainStage.width, mainStage.height));
+			}
+			
+			drawNow();
+			
+			//trace(mainStage.width, mainStage.height);
+			//trace(stage.stageWidth, stage.stageHeight);
+		}
+		
+		protected function onWebcastLoaded(response:Object):void
+		{
+			webcast = WebcastVO.fromObject(response);
+			
+			WebcastManager.init(webcast);
+			
+			header.title = webcast.title;
+			
+			currentChapter = webcast.chapters[webcast.initialChapter];	
+
+			Security.allowDomain(webcast.network.assetServer);
+			
+			// Begin loading assets.
+			var assetExtractor = new AssetExtractor(webcast);
+			assetManager = AssetManager.getInstance();
+			assetExtractor.populateManager(assetManager);
+			
+			assetManager.assetsLoaded.add(onAssetsLoaded);
+			assetManager.assetLoadError.add(onAssetLoadError);
+			
+			assetManager.load();
+		}
+		
+		protected function onAssetsLoaded(event:AssetsLoadedEvent):void
+		{		
+			disableAuxiliaryScene(loadingMessage);
+			enableScene(SceneUtil.makeScene(currentChapter));
+		}
+		
+		protected function onAssetLoadError(message:String):void
+		{
+			disableAuxiliaryScene(loadingMessage);
+			enableAuxiliaryScene(new MessageScene(message, "Error Loading Webcast!", MessageScene.STATUS_ERROR));
+		}
+		
+		protected function chapterForward():void
+		{
+			if ( historyForward.length == 0 )
+			{					
+				var nextChapterName = currentScene.chapter.nextChapter;
+
+				trace("Next chapter will be: " + nextChapterName);
+				
+				if ( nextChapterName == null)
+				{
+					
+					trace("End presentation; No next chapter defined in " + currentScene.chapter.name);
+					
+					var message:String	= new String("You have reached the end of this presentation.");
+					var title:String = new String("Presentation Complete");
+				
+					var messageScene:MessageScene = new MessageScene(message, title, MessageScene.STATUS_END);
+					enableAuxiliaryScene(messageScene);
+				}
+				
+				disableCurrentScene();
+				
+				historyBack.push(currentScene);
+				trace(webcast.chapters[nextChapterName]);
+				enableScene(SceneUtil.makeScene(webcast.chapters[nextChapterName]));
+			}
+			else
+			{
+				disableCurrentScene();
+				historyBack.push(currentScene);
+				enableScene(historyForward.pop());
+				mainStage.addChild(currentScene);
+			}
+		}
+		
+		protected function chapterBack():void
+		{
+			if ( historyBack.length == 0 )
+			{
+				trace("Ignored. No previous chapter in history.");
+				return;
+			}
+			else
+			{
+				disableCurrentScene();
+				historyForward.push(currentScene);
+				enableScene(historyBack.pop());
+			}
+		}
+			
+		protected function enableScene(scene: PresenterScene):void
+		{
+			if ( scene != null )
+			{
+				currentChapter = scene.chapter;
+				currentScene = scene;
+				mainStage.addChild(currentScene);
+				currentScene.chapterForward.add(onChapterForward);
+				currentScene.chapterBack.add(onChapterBack);
+				currentScene.chapterGoto.add(onChapterGoto);
+				currentScene.showMessage.add(onShowMessage);
+				currentScene.showError.add(onShowError);
+				currentScene.counter.add(onCounter);
+				currentScene.showARS.add(onShowARS);
+				currentScene.showFaculty.add(onShowFaculty);
+				currentScene.showDownloads.add(onShowDownloads);
+				currentScene.showSlideView.add(onShowSlideView);
+				currentScene.showVideoView.add(onShowVideoView);
+				currentScene.goFullscreen.add(onGoFullscreen);
+				
+				currentScene.resize(new Rectangle(0,0, mainStage.width, mainStage.height));
+				currentScene.start();
+			}
+		}
+		
+		protected function enableCurrentScene():void
+		{
+			enableScene(currentScene);
+		}
+		
+		protected function disableCurrentScene():void
+		{
+			if ( currentScene != null )
+			{
+				currentScene.pause();
+				
+				mainStage.removeChild(currentScene);
+				currentScene.chapterForward.removeAll()
+				currentScene.chapterBack.removeAll();
+				currentScene.chapterGoto.removeAll();
+				currentScene.showMessage.removeAll();
+				currentScene.showError.removeAll();
+				currentScene.counter.removeAll();
+				currentScene.showARS.removeAll();
+				currentScene.showFaculty.removeAll();
+				currentScene.showDownloads.removeAll();
+				currentScene.showSlideView.removeAll();
+				currentScene.goFullscreen.removeAll();
+			}
+		}
+		
+		protected function enableAuxiliaryScene(scene: AuxScene):void
+		{
+			disableCurrentScene();
+			scene.close.add(onAuxiliarySceneClose);
+			mainStage.addChild(scene);
+		}
+		
+		protected function disableAuxiliaryScene(scene: AuxScene):void
+		{
+			scene.close.removeAll();
+			mainStage.removeChild(scene);
+			enableCurrentScene();
+		}
+			
+		protected function onAuxiliarySceneClose(event:AuxCloseEvent)
+		{
+			disableAuxiliaryScene(event.target as AuxScene);
+		}
+		
+		protected function createMessage(message:String, title:String, status:int):void
+		{
+			var messageScene:MessageScene = new MessageScene(message, title, status);
+			enableAuxiliaryScene(messageScene);
+		}
+		
+		protected function showFaculty(faculty:Dictionary):void
+		{
+			var facultyScene:FacultyScene = new FacultyScene(faculty);
+			enableAuxiliaryScene(facultyScene);
+		}	
+			
+		protected function onWebcastLoadFailed(response:Object):void
+		{
+			enableAuxiliaryScene(new MessageScene("Error loading webcast. Please reload.", "Error Loading Webcast!", MessageScene.STATUS_ERROR));
+		}
+		
+		protected function onChapterForward(event:ChapterForwardEvent)
+		{
+			trace("Got ChapterForward signal from <" + event.target.toString() + ">");
+			chapterForward();
+		}
+		
+		private function onChapterBack(event:ChapterBackEvent)
+		{
+			trace("Got ChapterBack signal from <" + event.target.toString() + ">");
+			chapterBack();
+		}
+		
+		private function onChapterGoto(event:ChapterGotoEvent)
+		{
+			trace("Got ChapterGoto(" + event.chapterName + ") signal from <" + event.target.toString() + ">");	
+		}
+		
+		private function onShowMessage(event:ShowMessageEvent)
+		{
+			trace("Got ShowMessage(" + event.message + ", " + event.status.toString() + ") signal from <" + event.target.toString() + ">");
+			createMessage(event.message, event.title, event.status);
+		}
+		
+		private function onShowError(event:ShowErrorEvent)
+		{
+			trace("Got ShowError(" + event.message + ") signal from <" + event.target.toString() + ">. Message status defaults to: " + event.status.toString());
+			createMessage(event.message, event.title, event.status);
+		}
+		
+		private function onCounter(event:CounterEvent)
+		{
+			trace("Got Counter(" + event.index + ") signal from <" + event.target.toString() + ">");
+		}
+		
+		private function onShowARS(event:ShowARSEvent)
+		{
+			trace("Got ShowARS(" + event.questions.toString() + ") signal from <" + event.target.toString() + ">");
+			
+			trace("making ars scene");
+			
+			var ars:ArsScene = new ArsScene(event.questions);
+			
+			trace("finished making ars scene");
+			
+			enableAuxiliaryScene(ars);
+			
+			trace("Scene enabled");
+		}
+		
+		private function onShowFaculty(event:ShowFacultyEvent)
+		{
+			trace("Got ShowFaculty(" + event.faculty.toString() + ") signal from <" + event.target.toString() + ">");			
+			enableAuxiliaryScene(new FacultyScene(webcast.faculty));
+		}
+		
+		private function onShowSlideView(event:ShowSlideViewEvent)
+		{
+			trace("Got ShowSlideView(" + event.chapterName + ", " + event.index + ") signal from <" + event.target.toString() + ">");
+		}
+
+		private function onShowVideoView(event:ShowVideoViewEvent)
+		{
+			disableCurrentScene();
+			var videoScene = new VideoScene(webcast.chapters[event.chapterName]);
+			enableScene(videoScene);
+			trace("Got ShowVideoView(" + event.chapterName + ", " + event.index + ") signal from <" + event.target.toString() + ">");
+		}
+
+		private function onShowDownloads(event:ShowDownloadsEvent):void
+		{
+			trace("Got ShowDownloads() signal from <" + event.target.toString() + ">");
+		}
+		
+		private function onGoFullscreen(event:GoFullscreenEvent):void
+		{
+			trace("Got GoFullscreen() signal from <" + event.target.toString() + ">");
+		}
+	}
+}
+

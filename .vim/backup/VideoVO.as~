@@ -1,0 +1,93 @@
+package com.cecentral.models
+{
+    public class VideoVO
+    {
+		private var _id: int;
+		private var _file: String;
+		private var _protocol: String;
+        private var _bitrate: int;
+        private var _width: int;
+        private var _height: int;
+		
+		public static function fromObject(o: Object): VideoVO
+		{
+			var vo:VideoVO = new VideoVO();
+			
+			if ( o == null ) return null;
+			
+			vo.id = o.id;
+			vo.file = o.file;
+			vo.protocol = o.protocol;
+            vo.bitrate = o.bitrate;
+            vo.width = o.width;
+            vo.height = o.height;
+			
+			return vo;
+		}
+		
+		public static function fromObjects(os: Array): Array
+		{
+			return VOUtil.fromObjects(os, VideoVO);
+		}
+
+		public function get id():int
+		{
+			return _id;
+		}
+
+		public function set id(value:int):void
+		{
+			_id = value;
+		}
+
+		public function get file():String
+		{
+			return _file;
+		}
+
+		public function set file(value:String):void
+		{
+			_file = value;
+		}
+
+		public function get protocol():String
+		{
+			return _protocol;
+		}
+
+		public function set protocol(value:String):void
+		{
+			_protocol = value;
+		}
+
+        public function get bitrate():int
+        {
+            return _bitrate;
+        }
+
+        public function set bitrate(value:int):void
+        {
+            _bitrate = value;
+        }
+
+        public function get width():int
+        {
+            return _width;
+        }
+
+        public function set width(value:int):void
+        {
+            _width = value;
+        }
+
+        public function get height():int
+        {
+            return _height;
+        }
+
+        public function set height(value:int):void
+        {
+            _height = value;
+        }
+    }
+}

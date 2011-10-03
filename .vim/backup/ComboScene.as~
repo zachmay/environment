@@ -1,0 +1,231 @@
+package com.cecentral.views.scenes
+{
+	import com.cecentral.event.ChapterBackEvent;
+	import com.cecentral.event.ChapterForwardEvent;
+	import com.cecentral.models.ChapterVO;
+	import com.cecentral.utils.SettingsUtil;
+	import com.cecentral.utils.assets.AssetManager;
+	import com.cecentral.views.scenes.combo.ComboSlideDeck;
+	import com.cecentral.views.scenes.controls.Playhead;
+	import com.cecentral.views.scenes.controls.SlideControls;
+	import com.cecentral.views.scenes.controls.VideoControls;
+	import com.cecentral.views.scenes.overlay.VideoOverlayContainer;
+	import com.cecentral.views.scenes.slide.SlideDeck;
+	import com.cecentral.views.scenes.video.VideoPlayer;
+	import com.yahoo.astra.fl.containers.BorderPane;
+	import com.yahoo.astra.fl.containers.BoxPane;
+	import com.yahoo.astra.fl.containers.VBoxPane;
+	
+	import flash.display.MovieClip;
+	import flash.display.Sprite;
+	import flash.geom.Rectangle;
+	
+	public class ComboScene extends PresenterScene
+	{
+		protected var videoContainer:BoxPane;
+		protected var videoPlayer:VideoPlayer;
+		
+		protected var slideSWF:MovieClip;
+		protected var overlayContainer:VideoOverlayContainer;
+		protected var slideDeck:ComboSlideDeck;
+		
+		protected var playhead:Playhead;
+		protected var controls:VideoControls;
+		
+		protected var rightPanel:VBoxPane;
+		protected var sceneContainer:BorderPane;
+		
+		protected var innerPaddingTop:int = 10;
+		protected var innerPaddingLeft:int = 10;
+		protected var innerPaddingBottom:int = 10;
+		protected var innerPaddingRight:int = 10;
+
+		protected var innerHorizontalGap:int = 10;
+
+		protected var componentDebugMode:Boolean = true;
+
+		public function ComboScene(theChapter:ChapterVO)
+		{
+			super(theChapter);
+			
+			var protocol:String = chapter.video.protocol.toLowerCase();
+			var isProgressive:Boolean = (protocol == 'http' || protocol == 'https');
+			
+			setStyle("skin", null);
+			autoSize = false;
+			
+			paddingTop = 10;
+			paddingLeft = 10;
+			paddingBottom = 10;
+			paddingRight = 10;
+			
+			//
+			// Playhead
+			//
+			playhead = new Playhead();
+			playhead.visible = false;
+			
+			//
+			// Video Controls
+			//
+			controls = new VideoControls(playhead, isProgressive);
+			controls.width = chapter.video.sources[0].width;
+			controls.replay.add(onReplay);
+			controls.playPause.add(onPlayPause);
+			controls.volumeSlider.volumeChange.add(onVolumeChange);
+			controls.progressSlider.seekChange.add(onSeekChange);
+	
+			//
+			// Video Component
+			//
+			
+			videoPlayer = new VideoPlayer(theChapter.video, theChapter.markers);
+			
+			videoContainer = new BoxPane();
+			videoContainer.autoSize = false;
+			//videoContainer.setStyle("skin", new BoxSkin());
+			videoContainer.paddingTop = innerPaddingTop;
+			videoContainer.paddingLeft = innerPaddingLeft;
+			videoContainer.paddingBottom = innerPaddingBottom;
+			videoContainer.paddingRight = innerPaddingRight;
+			videoContainer.setSize(videoPlayer.width + innerPaddingTop + innerPaddingBottom, videoPlayer.height + innerPaddingTop + innerPaddingBottom);
+			videoContainer.debugMode = componentDebugMode;
+			videoContainer.configuration = [ { target: videoPlayer } ];
+			
+			//
+			// Slide Deck
+			//
+			
+			slideSWF = AssetManager.getInstance().getSWF(chapter.deck.id).swf;
+			slideDeck = new ComboSlideDeck(slideSWF, videoPlayer);
+			overlayContainer = new VideoOverlayContainer(slideDeck);
+			
+			rightPanel = new VBoxPane();
+			rightPanel.configuration = [ { target: overlayContainer }
+				                       , { target: controls } ];
+			
+			sceneContainer = new BorderPane();
+			sceneContainer.horizontalGap = innerHorizontalGap;
+			sceneContainer.autoSize = false;
+			sceneContainer.debugMode = componentDebugMode;
+			
+			sceneContainer.configuration = [ { target: videoContainer, constraint: "left" }
+				                           , { target: rightPanel, constraint: "center" } ];
+			
+			configuration = [ { target: sceneContainer, percentWidth: 100, percentHeight: 100 } ];
+			
+			//
+			// Video Overlay Container Signal Handling
+			//
+			overlayContainer.nextChapter.add(onOverlayContainerNextChapter);
+			overlayContainer.prevChapter.add(onOverlayContainerPrevChapter);
+			overlayContainer.showDownloads.add(onOverlayContainerShowDownloads);
+			overlayContainer.showFaculty.add(onOverlayContainerShowFaculty);
+			overlayContainer.goFullscreen.add(onOverlayContainerGoFullscreen);
+			
+			overlayContainer.playerStateChange.add(onOverlayContainerPlayerStateChange);
+			overlayContainer.playerComplete.add(onOverlayContainerPlayerComplete);
+			overlayContainer.playerCurrentTimeChange.add(onOverlayContainerPlayerCurrentTimeChange);
+			overlayContainer.playerBytesLoadedChange.add(onOverlayContainerPlayerBytesLoadedChange);
+			overlayContainer.playerLoadStateChange.add(onOverlayContainerPlayerLoadStateChange);
+			
+		}
+		
+		/*********************************
+		 * Video Overlay Signal Handling *
+		 *********************************/
+		
+		protected function onOverlayContainerPrevChapter():void
+		{
+			chapterBack.dispatch(new ChapterBackEvent());
+		}
+		
+		protected function onOverlayContainerNextChapter():void
+		{
+			chapterForward.dispatch(new ChapterForwardEvent());
+		}
+		
+		protected function onOverlayContainerShowDownloads():void
+		{
+			showDownloads.dispatch();
+		}
+		
+		protected function onOverlayContainerShowFaculty():void
+		{
+			showFaculty.dispatch(chapter.facultyIDs);
+		}
+		
+		protected function onOverlayContainerGoFullscreen():void
+		{
+			goFullscreen.dispatch();
+		}
+		
+		protected function onOverlayContainerPlayerStateChange(newState:String):void
+		{
+			trace("ComboScene::onOverlayContainerPlayerStateChange");
+		}
+		
+		protected function onOverlayContainerPlayerComplete():void
+		{
+			chapterForward.dispatch();
+		}
+		
+		protected function onOverlayContainerPlayerCurrentTimeChange(newTime:Number, totalTime:Number):void
+		{
+			controls.progressSlider.timeChange(newTime, totalTime);
+		}
+		
+		protected function onOverlayContainerPlayerBytesLoadedChange(newBytes:Number, totalBytes:Number):void
+		{
+			trace("ComboScene::onOverlayContainerPlayerBytesLoadedChange()");
+			controls.progressSlider.updateLoadedBar(newBytes, totalBytes);
+		}
+		
+		protected function onOverlayContainerPlayerLoadStateChange():void
+		{
+			trace("ComboScene::onOverlayContainerPlayerLoadStateChange()");
+		}
+
+		
+		/********************************
+		 * Video Control Event Handlers *
+		 ********************************/
+		
+		protected function onReplay():void
+		{
+			overlayContainer.player.rewind();
+		}
+		
+		protected function onPlayPause():void
+		{
+			overlayContainer.player.togglePlayPaused();
+		}
+		
+		protected function onVolumeChange(newVolume:Number):void
+		{
+			overlayContainer.player.volume = newVolume;
+			SettingsUtil.getInstance().globalVolume = newVolume;
+		}
+		
+		protected function onSeekChange(value:Number):void
+		{
+			overlayContainer.player.seek(value);
+		}
+		
+		/***********************************
+		 * PresenterScene Method Overrides *
+		 ***********************************/
+		
+		override public function resize(rect:Rectangle):void
+		{	
+			super.resize(rect);
+			
+			trace("Inside ComboScene::resize - new bounds ", rect.width, rect.height);
+			trace("Inside ComboScene::resize - videoContainer ", videoContainer.width, videoContainer.height);
+			trace("Inside ComboScene::resize - slideContainer ", overlayContainer.width, overlayContainer.height);
+			
+			//sceneContainer.width = rect.width - paddingLeft - paddingRight;
+			//sceneContainer.height = rect.height - paddingTop - paddingBottom;
+		}
+	}
+}

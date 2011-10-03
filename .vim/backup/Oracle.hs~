@@ -1,0 +1,92 @@
+import Control.Monad (liftM)
+import Text.ParserCombinators.Parsec
+import Data.Char
+import Data.List (sort)
+
+import qualified Magic.Card as C
+import Magic.Mana
+
+parseManaCost s = case parse manaCost "fail" s of
+                       Left _   -> error "Bad mana symbol"
+                       Right ms -> sort ms
+
+card = do title <- line
+          manaCost <- option [] manaCost
+          cardType <- line
+          ptOrLoyalty <- line
+          text <- many line
+          editions <- line
+          return $ C.Card { C.title = title
+                          , C.manaCost = manaCost
+                          , C.cardType = cardType
+                          , C.cardStat = ptOrLoyalty
+                          , C.cardText = (unlines text)
+                          , C.editions = editions }
+
+
+manaCost = do ms <- many manaSymbol
+              eof
+              return ms
+
+manaSymbol :: GenParser Char st ManaSymbol
+manaSymbol = try phyrexianManaSymbol
+         <|> try hybridManaSymbol 
+         <|> try colorlessManaSymbol
+         <|> try variableColorlessManaSymbol
+         <|> simpleManaSymbol
+         <|> snowManaSymbol
+
+simpleManaSymbol :: GenParser Char st ManaSymbol
+simpleManaSymbol = (iChar 'W' >> return (Mana White))
+               <|> (iChar 'U' >> return (Mana Blue))
+               <|> (iChar 'B' >> return (Mana Black))
+               <|> (iChar 'R' >> return (Mana Red))
+               <|> (iChar 'G' >> return (Mana Green))
+               <?> "simple mana"
+
+hybridManaSymbol :: GenParser Char st ManaSymbol
+hybridManaSymbol = do char '('
+                      m1 <- simpleManaSymbol <|> colorlessManaSymbol
+                      char '/'
+                      m2 <- simpleManaSymbol <|> colorlessManaSymbol
+                      char ')'
+                      return (HybridMana m1 m2)
+                   <?> "hybrid mana"
+
+phyrexianManaSymbol :: GenParser Char st ManaSymbol
+phyrexianManaSymbol = (iString "(w/p)" >> return (PhyrexianMana White))
+                  <|> (iString "(u/p)" >> return (PhyrexianMana Blue))
+                  <|> (iString "(b/p)" >> return (PhyrexianMana Black))
+                  <|> (iString "(r/p)" >> return (PhyrexianMana Red))
+                  <|> (iString "(g/p)" >> return (PhyrexianMana Green))
+                  <?> "Phyrexian mana"
+
+variableColorlessManaSymbol :: GenParser Char st ManaSymbol
+variableColorlessManaSymbol = (iChar 'X' >> return (VarColorlessMana VarX))
+                          <|> (iChar 'Y' >> return (VarColorlessMana VarY))
+                          <|> (iChar 'Z' >> return (VarColorlessMana VarZ))
+                          <?> "colorless mana"
+
+colorlessManaSymbol :: GenParser Char st ManaSymbol
+colorlessManaSymbol = do n <- many1 digit
+                         return $ ColorlessMana (read n)
+                      <?> "colorless mana"
+
+snowManaSymbol :: GenParser Char st ManaSymbol
+snowManaSymbol = iChar 'S' >> return SnowMana
+                 <?> "snow mana"
+                         
+iChar c   = satisfy (\x -> toUpper x == toUpper c)
+iString s = mapM_ iChar s <?> s
+
+line :: GenParser Char st String
+line = do s <- many (noneOf "\r\n")
+          eol
+          return s
+
+eol :: GenParser Char st String
+eol = try (string "\n\r")
+  <|> try (string "\r\n")
+  <|> string "\n"
+  <|> string "\r"
+

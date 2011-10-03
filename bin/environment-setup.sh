@@ -51,6 +51,14 @@ else
     ln -s $1/.screenrc ~/.screenrc || echo "Could not link ~/.screenrc!"
 fi
 
+### .screenrc
+if [ -e ~/.inputrc ];
+then
+    echo "~/.inputrc exists... skipping"
+else
+    ln -s $1/.inputrc ~/.inputrc || echo "Could not link ~/.inputrc!"
+fi
+
 ### bin scripts
 if ! [ -d ~/bin ];
 then

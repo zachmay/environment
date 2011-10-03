@@ -1,0 +1,194 @@
+package com.cecentral.views.scenes.controls {
+
+	import flash.display.SimpleButton;
+	import flash.display.Bitmap;
+	import flash.text.TextField;
+	import flash.text.TextFieldType;
+	import flash.events.Event;
+	import flash.events.FocusEvent;
+	import flash.events.MouseEvent;
+	import flash.events.KeyboardEvent;
+	import flash.ui.Keyboard;
+
+	import com.yahoo.astra.fl.containers.HBoxPane;
+	import com.yahoo.astra.layout.modes.HorizontalAlignment;
+	import org.osflash.signals.Signal;
+	import org.osflash.signals.natives.NativeSignal;
+	import org.casalib.util.StageReference;
+
+	import com.cecentral.utils.SimpleTextField;
+	import com.cecentral.utils.controls.ButtonUtil;
+
+	public class SlideControls extends Controls	{
+
+		public var goForward:Signal;
+		public var goBack:Signal;
+
+		public var gotoSlide:Signal;
+		protected var inputTextField:SimpleTextField;
+		protected var totalText:SimpleTextField;
+
+		protected var prevBtn:SimpleButton;
+		protected var nextBtn:SimpleButton;
+		
+		public function SlideControls() {
+			
+			goForward = new Signal();
+			goBack = new Signal();
+
+			gotoSlide = new Signal(int);
+
+			horizontalAlign = HorizontalAlignment.CENTER;
+			setSize(NaN, NaN);
+			new NativeSignal(StageReference.getStage(), KeyboardEvent.KEY_DOWN).add(onKeyDown);
+			new NativeSignal(StageReference.getStage(), MouseEvent.MOUSE_WHEEL).add(onMouseWheel);
+
+			//Previous Btn
+			var btnPrev = new Bitmap(new BtnPrev);
+			var btnPrevOver = new Bitmap(new BtnPrevOver);
+			prevBtn = ButtonUtil.buildSimpleButton(btnPrev, btnPrevOver);
+			new NativeSignal(prevBtn, MouseEvent.MOUSE_DOWN).add(onPrevBtnClick);
+			
+			//Next Btn
+			var btnNext = new Bitmap(new BtnNext);
+			var btnNextOver = new Bitmap(new BtnNextOver);
+			nextBtn = ButtonUtil.buildSimpleButton(btnNext, btnNextOver);
+			new NativeSignal(nextBtn, MouseEvent.MOUSE_DOWN).add(onNextBtnClick);
+
+			var readout = new HBoxPane();
+			readout.setSize(NaN, NaN);
+
+			var labelText = new SimpleTextField({
+				size:11,
+				color:0xa8afb8,
+				text:"Slide:",
+				selectable:false
+			});
+
+			var textInputBox = new HBoxPane();
+			textInputBox.setStyle("skin", new TextInputBg());
+			textInputBox.setSize(NaN, NaN);
+			textInputBox.paddingTop = 1;
+			textInputBox.paddingBottom = 1;
+
+			inputTextField = new SimpleTextField({
+				size:11,
+				color:0xa8afb8,
+				text:"10",
+				autoSize: "none",
+				align:"center"
+			});
+			inputTextField.width = 23;
+			inputTextField.height = 18;
+			inputTextField.type = TextFieldType.INPUT;
+			new NativeSignal(inputTextField, KeyboardEvent.KEY_DOWN).add(onTextEnter);
+
+			textInputBox.addChild(inputTextField);
+
+			totalText = new SimpleTextField({
+				size:11,
+				color:0xa8afb8,
+				text:"/ " + totalSlides,
+				selectable:false
+			});
+
+			readout.configuration = [
+				{target:labelText},
+				{target:textInputBox},
+				{target:totalText}
+			];
+
+			fluidBox.addChild(readout);
+
+			//Main HBoxPane Config
+			configuration = [
+				{target:prevBtn},
+				{target:fluidBox},
+				{target:nextBtn}
+			];
+		}
+
+		protected function onKeyDown(event:KeyboardEvent):void {
+			if (stage) {
+				switch (event.keyCode) {
+					case Keyboard.LEFT:
+					case Keyboard.UP:
+					case 75:
+						prevBtn.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_DOWN));
+						break;
+					case Keyboard.RIGHT:
+					case Keyboard.DOWN:
+					case 74:
+						nextBtn.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_DOWN));
+						break;
+				}
+			}
+		}
+
+		protected function onMouseWheel(event:MouseEvent):void {
+			if (stage) {
+				var insideParent = parent.hitTestPoint(stage.mouseX, stage.mouseY, true);
+				if (insideParent) {
+					if (event.delta < 0) {
+						prevBtn.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_DOWN));
+					} else if (event.delta > 0) {
+						nextBtn.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_DOWN));
+					}
+				}
+			}
+		}
+
+		protected function onPrevBtnClick(event:MouseEvent):void {
+			goBack.dispatch();
+		}
+		
+		protected function onNextBtnClick(event:MouseEvent):void {
+			var targetNum = int(inputTextField.text);
+			if (targetNum != slideNumber) {
+				gotoSlideNum(inputTextField.text);
+			} else {
+				goForward.dispatch();
+			}
+		}
+
+		protected function onTextEnter(event:KeyboardEvent):void	{
+			if(event.charCode == 13) {
+				gotoSlideNum(inputTextField.text);
+			}
+		}
+
+		protected function gotoSlideNum(userInput:String):void {
+			var pattern:RegExp = /^[0-9]*[1-9]+$|^[1-9]+[0-9]*$/;
+			
+			if (pattern.test(userInput)) {
+				gotoSlide.dispatch(int(inputTextField.text));
+			} else {
+				inputTextField.text = slideNumber.toString();
+			}
+			
+			inputTextField.setSelection(0, 0);
+			stage.focus = null;
+		}
+
+		override public function set slideNumber(value:int):void {
+			_slideNumber = value;
+			updateSlideNumberDisplay();
+		}
+
+		override public function set totalSlides(value:int):void	{
+			_totalSlides = value;
+			updateSlideNumberDisplay();
+		}
+
+		protected function updateSlideNumberDisplay():void {
+			inputTextField.text = String(slideNumber);
+			totalText.text = "/ " + totalSlides;
+		}
+
+		public function resetUI():void {
+			trace("SlideControls::resetUI()");
+			prevBtn.downState = prevBtn.upState;
+			nextBtn.downState = nextBtn.upState;
+		}
+	}
+}

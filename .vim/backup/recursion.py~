@@ -1,0 +1,9 @@
+def recursion(a, c, f):
+    def r(n):
+        if n == 1:
+            return f(n)
+        else:
+            a * (n/c) + f(n)
+    return r
+
+

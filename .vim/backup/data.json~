@@ -1,0 +1,280 @@
+{
+	"title": "The Test Webcast",
+    "activityID": 2999,
+	"initialChapter": "begin",
+	"network": {
+        "cdn": "www.cecentral.com",
+		"rtmpCDN": "www.cecentral.com",
+        "httpCDN": "www.cecentral.com",
+		"basePath": "presenter/course/2011/pes11103-03", 
+		"assetServer": "www.cecentral.com", 
+		"assetBasePath": "" 
+	},
+	"faculty": [{
+		"id": 14722,
+		"heading": "Holly Divine, PharmD, CGP, CDE",
+		"imagePath": "uploads/faculty/532-1882656525.jpg",
+		"bio": "Dr. Divine is co-director of the PharmacistCARE program. She is an associate professor in the Department of Pharmacy Practice and Science of the UK College of Pharmacy. Dr. Divine is a certified geriatric pharmacist and a certified diabetes educator.",
+		"affiliations": "Associate Professor<br>Introductory Pharmacy Practice Experience Coordinator<br>Community Pharmacy Residency Director<br>Department of Pharmacy Practice and Science<br>University of Kentucky College of Pharmacy"
+	},{
+		"id": 532,
+		"heading": "Jay A. Perman, MD",
+		"imagePath": "uploads/faculty/532-1882656525.jpg",
+		"bio": "Dr. Perman is the dean of the University of Kentucky College of Medicine. He completed his Doctorate of Medicine at Northwestern University, and a fellowship in Pediatric Gastroenterology at Harvard Medical School. He was a Best Doctor® in 2007.",
+		"affiliations": "Dean<br>University of Kentucky College of Medicine<br>Vice President for Clinical Affairs<br>UK HealthCare"		
+	}],
+	"chapters": [{
+		"name": "begin",
+		"title": "The First Chapter",
+		"nextChapter": "anotherChapter",
+		"faculty": [14722, 532],
+		"video": {
+            "sources": [ { "id": 1128
+			             , "filePath": "pes11103-03-med.flv"
+			             , "protocol": "rtmp"
+                         , "bitrate": 1024
+                         , "width": 640
+                         , "height": 480
+                         , "preferred": true
+                         , "description": "Medium Quality" }
+                       , { "id": 1129
+			             , "filePath": "pes11103-03-hi.flv"
+			             , "protocol": "rtmp"
+                         , "bitrate": 2048
+                         , "width": 960 
+                         , "height": 720
+                         , "preferred": false
+                         , "description": "High Quality" }
+                       ]
+		},
+		"deck": {
+			"id": 1054,
+			"filePath": "pes11103-03.swf",
+			"align": "right"
+		},
+		"markers": [{
+			"cue": "00:00:00.00",
+			"slide": 1,
+			"questions": [{
+				"id": 1,
+                "assessmentID": 1,
+                "requireAnswer": true,
+                "graded": false,
+				"text": "The objectives for this activity were achieved:",
+				"answers": [{
+					"id": 1,
+					"text": "Strongly Agree",
+					"responses": 11
+				},{
+					"id": 2,
+					"text": "Agree",
+					"responses": 9
+				},{
+					"id": 3,
+					"text": "Indifferent",
+					"responses": 147
+				},{
+					"id": 4,
+					"text": "Disagree",
+					"responses": 9
+				},{
+					"id": 5,
+					"text": "Strongly Disagree",
+					"responses": 9
+				}]
+			},{ "id": 2,
+                "assessmentID": 1,
+                "requireAnswer": true,
+                "graded": false,
+				"text": "This activity will prove useful in my practice:",
+				"answers": [{
+					"id": 1,
+					"text": "Strongly Agree",
+					"responses": 11
+				},{
+					"id": 2,
+					"text": "Agree",
+					"responses": 9
+				},{
+					"id": 3,
+					"text": "Indifferent",
+					"responses": 147
+				},{
+					"id": 4,
+					"text": "Disagree",
+					"responses": 9
+				},{
+					"id": 5,
+					"text": "Strongly Disagree",
+					"responses": 9
+				}]
+			}]
+		},{
+			"cue": "00:00:20.00",
+			"slide": 2,
+			"questions": [{
+				"id": 1,
+				"text": "What is the color of the sky?",
+				"answers": [{
+					"id": 1,
+					"text": "Red",
+					"responses": 11
+				},{
+					"id": 2,
+					"text": "Green",
+					"responses": 9
+				},{
+					"id": 3,
+					"text": "Blue",
+					"responses": 147,
+					"correct": true
+				}]
+			}]
+		},{
+			"cue": "00:00:30.00",
+			"slide": 3
+		},{
+			"cue": "00:00:40.00",
+			"slide": 4
+		}],
+		"links": [{
+			"id": 415,
+			"text": "Download PDF",
+			"filePath": "2145.pdf"
+		},{
+			"id": 416,
+			"text": "Download Transcript",
+			"filePath": "2145.doc"
+		}]
+	},{
+		"name": "anotherChapter",
+		"title": "Another Chapter",
+		"nextChapter": "evenAnotherChapter",
+		"faculty": [532],
+		"deck": {
+			"id": 1054,
+			"filePath": "pes11103-03.swf",
+			"align": "right"
+		},
+		"markers": [{
+			"slide": 2,
+			"questions": [{
+				"id": 1,
+                "assessmentID": 1,
+                "requireAnswer": true,
+                "graded": false,
+				"text": "The objectives for this activity were achieved:",
+				"answers": [{
+					"id": 1,
+					"text": "Strongly Agree",
+					"responses": 11
+				},{
+					"id": 2,
+					"text": "Agree",
+					"responses": 9
+				},{
+					"id": 3,
+					"text": "Indifferent",
+					"responses": 147
+				},{
+					"id": 4,
+					"text": "Disagree",
+					"responses": 9
+				},{
+					"id": 5,
+					"text": "Strongly Disagree",
+					"responses": 9
+				}]
+			},{ "id": 2,
+                "assessmentID": 1,
+                "requireAnswer": true,
+                "graded": false,
+				"text": "This activity will prove useful in my practice:",
+				"answers": [{
+					"id": 1,
+					"text": "Strongly Agree",
+					"responses": 11
+				},{
+					"id": 2,
+					"text": "Agree",
+					"responses": 9
+				},{
+					"id": 3,
+					"text": "Indifferent",
+					"responses": 147
+				},{
+					"id": 4,
+					"text": "Disagree",
+					"responses": 9
+				},{
+					"id": 5,
+					"text": "Strongly Disagree",
+					"responses": 9
+				}]
+			}]
+		},{
+			"slide": 4,
+            "questions": [
+            { "id": 2,
+              "assessmentID": 1,
+              "requireAnswer": true,
+              "graded": false,
+			  "text": "This activity will prove useful in my practice:",
+              "answers": [{
+					"id": 1,
+					"text": "Strongly Agree",
+					"responses": 11
+				},{
+					"id": 2,
+					"text": "Agree",
+					"responses": 9
+				},{
+					"id": 3,
+					"text": "Indifferent",
+					"responses": 147
+				},{
+					"id": 4,
+					"text": "Disagree",
+					"responses": 9
+				},{
+					"id": 5,
+					"text": "Strongly Disagree",
+					"responses": 9
+				}]
+			}],
+			"tracks": [{
+				"id": 2212,
+				"filePath": "2145-01.flv",
+				"protocol": "rtmp"
+			},{
+				"id": 2213,
+				"filePath": "2145-02.flv",
+				"protocol": "rtmp"
+			}]
+		}],
+		"links": [{
+			"id": 415,
+			"text": "Download PDF",
+			"filePath": "2145.pdf"
+		}]
+	},{
+		"name": "evenAnotherChapter",
+		"title": "Event Another Chapter",
+		"faculty": [532],
+		"deck": {
+			"id": 1054,
+			"filePath": "pes11103-03.swf",
+			"align": "right"
+		},
+		"video": {
+            "sources": [ { "id": 1128
+			             , "filePath": "pes11103-03.flv"
+			             , "protocol": "rtmp"
+                         , "bitrate": 1024
+                         , "width": 640
+                         , "height": 480
+                         , "preferred": true
+                         , "decription": "Medium quality" } ]
+		}
+	}]
+}

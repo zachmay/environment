@@ -1,0 +1,23 @@
+module DiceReader where
+
+import Text.ParserCombinators.Parsec
+import Data.Char
+
+import Hd20
+
+diceType :: GenParser Char st DiceType
+diceType = simpleDice
+{-       <|> customDice
+       <|> constantDice -}
+
+simpleDice :: GenParser Char st DiceType
+simpleDice = do count <- integer
+                char 'd'
+                sides <- integer
+                return (Dice count sides)
+
+integer :: GenParser Char st Int
+integer = do s <- many1 digit
+             return (read s)
+
+

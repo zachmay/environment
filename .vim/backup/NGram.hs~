@@ -1,0 +1,23 @@
+module NGram where
+
+import Corpus
+
+data NGramOccurrence a = NGramOccurrence a Int
+
+mergeOccurrences :: (Ord a) => NGramOccurrence a -> NGramOccurrence a -> NGramOccurrence a
+mergeOccurrences occur@(NGramOccurrence x n) (NGramOccurrence y m) | x == y    = NGramOccurrence x (n + m)
+                                                                   | otherwise = occur
+
+ngramify :: (Ord  a) => Int -> [a] -> [([a], NGramOccurrence a)]
+ngramify n xs = nmap n ngramifyHelper xs
+
+ngramifyHelper xs = (init xs, NGramOccurrence (last xs) 1)
+
+nmap :: Int -> ([a] -> b) -> [a] -> [b]
+nmap n f xs = map f $ nAtATime n xs
+
+nAtATime :: Int -> [a] -> [[a]]
+nAtATime n xs | n > length xs = []
+              | otherwise     = take n xs : nAtATime n (tail xs)
+
+

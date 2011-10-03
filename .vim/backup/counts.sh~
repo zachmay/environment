@@ -1,0 +1,75 @@
+#!/bin/bash
+
+nw=$[`cat white | wc -l`]
+nu=$[`cat white | wc -l`]
+nb=$[`cat white | wc -l`]
+nr=$[`cat white | wc -l`]
+ng=$[`cat white | wc -l`]
+nmono=$[$nw + $nu + $nb + $nr + $ng]
+
+nwu=$[`cat white-blue | wc -l`]
+nwb=$[`cat white-black | wc -l`]
+nwr=$[`cat white-red | wc -l`]
+nwg=$[`cat white-green | wc -l`]
+nub=$[`cat blue-black | wc -l`]
+nur=$[`cat blue-red | wc -l`]
+nug=$[`cat blue-green | wc -l`]
+nbr=$[`cat black-red | wc -l`]
+nbg=$[`cat black-green | wc -l`]
+nrg=$[`cat red-green | wc -l`]
+nallied=$[$nwu + $nwg + $nub + $nbr + $nrg]
+nenemy=$[$nwb + $nwr + $nur + $nug + $nbg]
+
+nwug=$[`cat white-blue-green | wc -l`]
+nwub=$[`cat white-blue-black | wc -l`]
+nubr=$[`cat blue-black-red | wc -l`]
+nbrg=$[`cat black-red-green | wc -l`] 
+nwrg=$[`cat white-red-green | wc -l`]
+nshard=$[$nwug + $nwub + $nubr + $nbrg + $nwrg]
+
+nmulti=$[$nallied + $nenemy + $nshard]
+
+ncolorless=$[`cat colorless | wc -l`]
+
+nland=$[`cat land | wc -l`]
+
+ntotal=$[$nland + $ncolorless + $multi + $nmono]
+
+printf "White\t\t\t$nw\n"
+printf "Blue\t\t\t$nu\n"
+printf "Black\t\t\t$nb\n"
+printf "Red\t\t\t$nr\n"
+printf "Green\t\t\t$ng\n"
+printf "\n"
+printf "White/Blue\t\t$nwu\n"
+printf "White/Green\t\t$nwg\n"
+printf "Blue/Black\t\t$nub\n"
+printf "Black/Red\t\t$nbr\n"
+printf "Red/Green\t\t$nrg\n"
+printf "\n"
+printf "Allied Pairs\t\t$nallied\n"
+printf "\n"
+printf "White/Black\t\t$nwb\n"
+printf "White/Red\t\t$nur\n"
+printf "Blue/Red\t\t$nur\n"
+printf "Blue/Green\t\t$nug\n"
+printf "Black/Green\t\t$nbg\n"
+printf "\n"
+printf "Enemy Pairs\t\t$nenemy\n"
+printf "\n"
+printf "White/Blue/Green\t$nwug\n"
+printf "White/Blue/Black\t$nwub\n"
+printf "Blue/Black/Red\t\t$nubr\n"
+printf "Black/Red/Green\t\t$nbrg\n"
+printf "White/Red/Green\t\t$nwrg\n"
+printf "\n"
+printf "Shards\t\t\t$nshard\n"
+printf "\n"
+printf "Mono-colored\t\t$nmono\n"
+printf "Multi-colored\t\t$nmulti\n"
+printf "Colorless\t\t$ncolorless\n"
+printf "Lands\t\t\t$nland\n"
+printf "\n"
+printf "Total\t\t\t$ntotal\n"
+
+

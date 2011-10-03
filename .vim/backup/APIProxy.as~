@@ -1,0 +1,213 @@
+package com.cecentral.net
+{
+	import com.adobe.serialization.json.JSON;
+	import com.adobe.serialization.json.JSONEncoder;
+	import com.base86.Tools;
+	import com.cecentral.utils.managers.StudentManager;
+	import com.greensock.events.LoaderEvent;
+	
+	import flash.events.Event;
+	import flash.events.HTTPStatusEvent;
+	import flash.events.IOErrorEvent;
+	import flash.events.SecurityErrorEvent;
+	import flash.events.TimerEvent;
+	import flash.net.URLLoader;
+	import flash.net.URLLoaderDataFormat;
+	import flash.net.URLRequest;
+	import flash.net.URLRequestHeader;
+	import flash.net.URLRequestMethod;
+	import flash.net.URLVariables;
+	import flash.utils.Timer;
+	
+	import org.casalib.events.LoadEvent;
+	import org.casalib.load.DataLoad;
+	import org.osflash.signals.Signal;
+	
+	public class APIProxy
+	{
+		public const API_BASE_URI:String = "http://zmay.cecentral.com/api"; // No trailing slash
+		public const TIMEOUT_DELAY:int = 8000;
+		
+		public static const HTTP_GET:String = "GET";
+		public static const HTTP_POST:String = "POST";
+		public static const HTTP_PUT:String = "PUT";
+		public static const HTTP_DELETE:String = "DELETE";
+			
+		
+		public var success:Signal;
+		public var failure:Signal;
+		
+		protected var dataLoader:DataLoad;
+		protected var timeoutTimer:Timer;
+		
+		private var _httpStatus:Number;
+
+		public function APIProxy()
+		{
+			this.success = new Signal(Object);
+			this.failure = new Signal(Object);
+			this.dataLoader = null;	
+			
+			httpStatus = null;
+		}
+		
+		protected function executeRequest(uri:String, body:Object = null, method:String = APIProxy.HTTP_GET):void
+		{
+			if ( this.dataLoader != null )
+			{
+				throw new Error("APIProxy: request while another request in progress.");
+			}
+
+			var request: URLRequest = new URLRequest(uri);
+			
+			request.method = method;
+			request.data = JSON.encode(body);
+			
+			request.requestHeaders = new Array( new URLRequestHeader("Accept", "application/json")
+			                                  , new URLRequestHeader("Content-Type", "application/json")
+			                                  , new URLRequestHeader("Cookie", StudentManager.getInstance().studentAuthCookie) );
+					
+			executeProxiedRequest(request);
+		}
+		
+		protected function executeProxiedRequest(request:URLRequest):void
+		{
+			var actualRequestBody:Object = new Object();
+
+			actualRequestBody.path    = request.url.substring(API_BASE_URI.length + 1);
+			actualRequestBody.headers = mapHeaders(request.requestHeaders);
+			actualRequestBody.method  = request.method;
+			actualRequestBody.body    = request.data;
+			
+			var actualRequest:URLRequest = new URLRequest(API_BASE_URI + "/proxy");
+			
+			actualRequest.data = JSON.encode(actualRequestBody);
+			actualRequest.contentType = "application/json";
+			actualRequest.method = URLRequestMethod.POST;
+			actualRequest.requestHeaders = new Array( new URLRequestHeader("Accept", "application/json") );
+			
+			this.dataLoader = new DataLoad(actualRequest);
+			this.dataLoader.addEventListener(LoadEvent.COMPLETE, onProxiedRequestComplete);
+			this.dataLoader.addEventListener(IOErrorEvent.IO_ERROR, onRequestIOError);
+			this.dataLoader.addEventListener(HTTPStatusEvent.HTTP_STATUS, onRequestHTTPStatus);
+			this.dataLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, onRequestSecurityError);	
+			
+			this.timeoutTimer = new Timer(this.TIMEOUT_DELAY);
+			this.timeoutTimer.addEventListener(TimerEvent.TIMER, onRequestTimeout);
+			
+			this.dataLoader.start();
+			this.timeoutTimer.start();
+		}
+		
+		protected function postRequest(uri:String, body:Object)
+		{
+			this.executeRequest(uri, body, APIProxy.HTTP_POST);
+		}
+		
+		/******************
+		 * Event Handling *
+		 ******************/
+		
+		protected function onRequestIOError(event:IOErrorEvent)
+		{
+			this.clearRequest();
+
+			this.failure.dispatch("Request IO error");
+		}
+		
+		protected function onRequestTimeout(event:TimerEvent)
+		{
+			this.clearRequest();
+
+			this.failure.dispatch("Timeout");
+		}
+		
+		protected function onRequestComplete(event:LoadEvent):void
+		{
+			var responseObject:Object = JSON.decode(dataLoader.dataAsString);
+
+			this.clearRequest();
+
+			this.success.dispatch(responseObject.content);
+
+		}
+		
+		protected function onProxiedRequestComplete(event:LoadEvent):void
+		{
+			var proxyContent:Object = JSON.decode(dataLoader.dataAsString).content;
+			var unwrapped:Object = JSON.decode(proxyContent.body).content;
+			
+			this.clearRequest();
+
+			trace(proxyContent.status);
+			
+			if ( proxyContent.status == "200" || proxyContent.status == "201" )
+			{
+				this.success.dispatch(unwrapped);
+			}
+			else
+			{
+				this.failure.dispatch(unwrapped);
+			}
+		}
+		
+		protected function onRequestSecurityError(event:SecurityErrorEvent):void
+		{
+			throw new Error("Security error in APIProxy");
+		}
+		
+		protected function onRequestHTTPStatus(event:HTTPStatusEvent):void
+		{
+			trace("Got HTTP Status event in APIProxy: " + event.status.toString());
+			
+			httpStatus = event.status;
+		}
+		
+		protected function clearRequest()
+		{
+			this.dataLoader.destroy();
+			this.dataLoader = null;
+			this.timeoutTimer.removeEventListener(TimerEvent.TIMER, onRequestTimeout);
+			this.timeoutTimer = null;
+		
+		}
+
+		protected function mapHeaders(headers:Array):Object
+		{
+			var thisHeader:URLRequestHeader;
+			var out:Object = new Object();
+			
+			for ( var i:int = 0; i < headers.length; i++ )
+			{
+				thisHeader = URLRequestHeader(headers[i]);
+				
+				out[thisHeader.name] = thisHeader.value;
+			}
+			
+			return out;
+		}
+		
+		public function get httpStatus():Number
+		{
+			return _httpStatus;
+		}
+
+		public function set httpStatus(value:Number):void
+		{
+			_httpStatus = value;
+		}
+
+		public static function encodeJSON(o:Object):String
+		{
+			if ( o == null || o == '\"\"' )
+			{
+				return "";
+			}
+			else
+			{
+				return JSON.encode(o);
+			}
+		}
+		
+	}
+}
