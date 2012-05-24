@@ -1,10 +1,11 @@
 #!/bin/bash 
-
-grep -Iirl \
+echo "Searching: >>" $1 "<<"
+grep -Iir \
      --exclude-dir=.svn \
      --exclude-dir=img \
      --exclude-dir=images \
      --exclude-dir=assets \
+     --exclude-dir=uploads \
      --exclude-dir=om \
      --exclude-dir=feeds \
      --exclude-dir=spotlight  "$1" * \
