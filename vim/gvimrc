@@ -1,0 +1,7 @@
+" GUI Stuff
+set guifont=Monaco:h13
+set columns=120
+
+let g:zenburn_high_Contrast=1
+colorscheme zenburn
+

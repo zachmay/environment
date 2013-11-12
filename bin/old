@@ -1,0 +1,80 @@
+
+#### .vimrc
+for f 
+if [ -e ~/.vimrc ];
+then
+    echo "~/.vimrc exists... skipping"
+else
+    ln -s $1/.vimrc ~/.vimrc || echo "Could not link ~/.vimrc!"
+fi
+
+### .gvimrc
+if [ -e ~/.gvimrc ];
+then
+    echo "~/.gvimrc exists... skipping"
+else
+    ln -s $1/.gvimrc ~/.gvimrc || echo "Could not link ~/.gvimrc!"
+fi
+
+### .vim/
+if [ -e ~/.vim ];
+then
+    echo "~/.vim/ directory exists... skipping"
+else
+    mkdir ~/.vim || echo "Could not create ~/.vim!"
+    mkdir ~/.vim/backup || echo "Could not create ~/.vim/backup!"
+    mkdir ~/.vim/temp || echo "Could not create ~/.vim/temp!"
+    ln -s $1/.vim/colors ~/.vim/colors || echo "Could not link ~/.vim/colors!!"
+fi
+
+### .bashrc
+if [ -e ~/.bashrc ];
+then
+    echo "~/.bashrc exists... skipping"
+else
+    ln -s $1/.bashrc ~/.bashrc || echo "Could not link ~/.bashrc!"
+fi
+
+### .profile
+if [ -e ~/.profile ];
+then
+    echo "~/.profile exists... skipping"
+else
+    ln -s $1/.profile ~/.profile || echo "Could not link ~/.profile!"
+fi
+
+### .screenrc
+if [ -e ~/.screenrc ];
+then
+    echo "~/.screenrc exists... skipping"
+else
+    ln -s $1/.screenrc ~/.screenrc || echo "Could not link ~/.screenrc!"
+fi
+
+### .screenrc
+if [ -e ~/.inputrc ];
+then
+    echo "~/.inputrc exists... skipping"
+else
+    ln -s $1/.inputrc ~/.inputrc || echo "Could not link ~/.inputrc!"
+fi
+
+### bin scripts
+if ! [ -d ~/bin ];
+then
+    echo "Creating ~/bin..."
+    mkdir ~/bin || "Could not link ~/bin/!"
+fi
+
+for f in $1/bin/*; do
+    bf=`basename $f`
+    if [ -e ~/bin/$bf ];
+    then
+        echo "~/bin/$bf exists... skipping"
+    else
+        ln -s $f ~/bin/$bf || echo "Could not link ~/bin/$f"
+    fi
+done
+
+
+

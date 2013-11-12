@@ -1,80 +1,56 @@
 #!/bin/bash
 
-#### .vimrc
-if [ -e ~/.vimrc ];
-then
-    echo "~/.vimrc exists... skipping"
-else
-    ln -s $1/.vimrc ~/.vimrc || echo "Could not link ~/.vimrc!"
-fi
+SOURCE=${1-$(cd ..; pwd)} # Default to absolute path to parent directory.
+DEST=${2-$HOME}           # Default to home directory.
 
-### .gvimrc
-if [ -e ~/.gvimrc ];
-then
-    echo "~/.gvimrc exists... skipping"
-else
-    ln -s $1/.gvimrc ~/.gvimrc || echo "Could not link ~/.gvimrc!"
-fi
-
-### .vim/
-if [ -e ~/.vim ];
-then
-    echo "~/.vim/ directory exists... skipping"
-else
-    mkdir ~/.vim || echo "Could not create ~/.vim!"
-    mkdir ~/.vim/backup || echo "Could not create ~/.vim/backup!"
-    mkdir ~/.vim/temp || echo "Could not create ~/.vim/temp!"
-    ln -s $1/.vim/colors ~/.vim/colors || echo "Could not link ~/.vim/colors!!"
-fi
-
-### .bashrc
-if [ -e ~/.bashrc ];
-then
-    echo "~/.bashrc exists... skipping"
-else
-    ln -s $1/.bashrc ~/.bashrc || echo "Could not link ~/.bashrc!"
-fi
-
-### .profile
-if [ -e ~/.profile ];
-then
-    echo "~/.profile exists... skipping"
-else
-    ln -s $1/.profile ~/.profile || echo "Could not link ~/.profile!"
-fi
-
-### .screenrc
-if [ -e ~/.screenrc ];
-then
-    echo "~/.screenrc exists... skipping"
-else
-    ln -s $1/.screenrc ~/.screenrc || echo "Could not link ~/.screenrc!"
-fi
-
-### .screenrc
-if [ -e ~/.inputrc ];
-then
-    echo "~/.inputrc exists... skipping"
-else
-    ln -s $1/.inputrc ~/.inputrc || echo "Could not link ~/.inputrc!"
-fi
-
-### bin scripts
-if ! [ -d ~/bin ];
-then
-    echo "Creating ~/bin..."
-    mkdir ~/bin || "Could not link ~/bin/!"
-fi
-
-for f in $1/bin/*; do
-    bf=`basename $f`
-    if [ -e ~/bin/$bf ];
+function maybe_link
+{
+    SRC=$1
+    DST=$2
+    if [[ -e $SRC ]];
     then
-        echo "~/bin/$bf exists... skipping"
-    else
-        ln -s $f ~/bin/$bf || echo "Could not link ~/bin/$f"
+        if [[ -e $DST || -h $DST ]];
+        then
+            echo "$DST exists. I will not create a link."
+        else
+            ln -s $SRC $DST || echo "Could not link $THIS_DEST"
+        fi
     fi
+}
+
+function maybe_mkdir 
+{
+    DIR=$1
+    if [[ ! -d $DIR ]];
+    then
+        mkdir $DIR
+    fi
+}
+
+FILES="vimrc.before
+vimrc.after
+gvimrc.before
+gvimrc.after
+vim
+janus
+oh-my-zsh
+bashrc
+tmux.conf
+zshrc
+screenrc
+profile"
+
+for file in $FILES
+do
+    THIS_SOURCE=$SOURCE/$file
+    THIS_DEST=$DEST/.$file
+    maybe_link $THIS_SOURCE $THIS_DEST
 done
 
+# Link .vimrc to Janus vimrc
+maybe_link $SOURCE/vim/janus/vim/vimrc $DEST/.vimrc
+maybe_link $SOURCE/vim/janus/vim/gvimrc $DEST/.gvimrc
 
-
+# Create vim backup/temp dirs.
+maybe_mkdir $DEST/.vim-backup
+maybe_mkdir $DEST/.vim-temp
