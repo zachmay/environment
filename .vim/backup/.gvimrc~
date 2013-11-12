@@ -1,5 +1,0 @@
-" GUI Stuff
-set guifont=Monaco:h13
-set columns=120
-
-colorscheme zenburn

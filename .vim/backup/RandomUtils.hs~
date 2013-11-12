@@ -1,7 +1,0 @@
-module RandomUtils where
-
-import System.Random
-
-rChoose :: (RandomGen g) => g -> [a] -> (a, g)
-rChoose gen xs = (xs !! r, nextGen)
-                 where (r, nextGen) = randomR gen (0, length xs - 1)

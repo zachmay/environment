@@ -1,5 +1,0 @@
-isInversion :: (Ord a) => (Integer, a) -> (Integer, a) -> Bool
-isInversion (n1, v1) (n2, v2) = n1 < n2 && v1 > v2
-
-isInversion' :: (Ord a) => ((Integer, a), (Integer, a)) -> Bool
-isInversion' (a b) = isInversion a b

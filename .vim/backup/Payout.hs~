@@ -1,4 +1,0 @@
-payout :: (RealFrac f, Integral b) => f -> (f -> b) -> f -> f -> [f]
-payout n rounding base degrade = takeWhile (>0) $ iterate (\x -> fromIntegral . rounding $ x * degrade) (base * n)
-
-

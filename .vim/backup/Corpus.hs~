@@ -1,9 +1,0 @@
-module Corpus where
-
-getCorpus = do
-    text <- readCorpus
-
-readCorpus = readFile "brown/ca01"
-
-untag :: String -> String
-untag = takeWhile (\c -> c /= '/')
