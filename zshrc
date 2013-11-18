@@ -30,7 +30,8 @@ TEX_BIN=/usr/texbin
 
 export PATH=/usr/local/share/python/:/usr/local/bin/:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:$GIT_BIN:$HOME_BIN:$CABAL_BIN:$NPM_BIN:$TEX_BIN
 
-ZSH_THEME=zachnoster
+ZSH_CUSTOM=$HOME/.zsh-custom
+ZSH_THEME=zach
 
 source $ZSH/oh-my-zsh.sh
 

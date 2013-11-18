@@ -32,10 +32,17 @@ function maybe_mkdir
     fi
 }
 
+
+
+###########################################################
+# Symlink Dotfiles
+###########################################################
+
 FILES="vim
 bashrc
 tmux.conf
 zshrc
+zsh-custom
 screenrc
 profile"
 
@@ -49,13 +56,20 @@ done
 # Link bin directory
 maybe_link $SOURCE/bin $DEST/bin
 
+###########################################################
+# Vim
+###########################################################
+
 # Link vimrc
 maybe_link $SOURCE/vim/vimrc $DEST/.vimrc
 
 # Create vim backup/temp dir.
 maybe_mkdir $DEST/.vim-backup
 
-# Init and update git submodules.
+###########################################################
+# Init and update git submodules
+###########################################################
+
 cd $SOURCE
 git submodule init
 git submodule update
