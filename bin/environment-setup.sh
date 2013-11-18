@@ -56,5 +56,7 @@ maybe_link $SOURCE/vim/vimrc $DEST/.vimrc
 maybe_mkdir $DEST/.vim-backup
 
 # Init and update git submodules.
+cd $SOURCE
 git submodule init
 git submodule update
+cd $DEST
