@@ -43,6 +43,7 @@ bashrc
 tmux.conf
 zshrc
 zsh-custom
+oh-my-zsh
 screenrc
 profile"
 
