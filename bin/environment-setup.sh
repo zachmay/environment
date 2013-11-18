@@ -33,7 +33,6 @@ function maybe_mkdir
 }
 
 FILES="vim
-oh-my-zsh
 bashrc
 tmux.conf
 zshrc
@@ -55,3 +54,7 @@ maybe_link $SOURCE/vim/vimrc $DEST/.vimrc
 
 # Create vim backup/temp dir.
 maybe_mkdir $DEST/.vim-backup
+
+# Init and update git submodules.
+git submodule init
+git submodule update
