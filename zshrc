@@ -34,34 +34,6 @@ ZSH_THEME=zachnoster
 
 source $ZSH/oh-my-zsh.sh
 
-############################
-# Start of Prompt Nonsense #
-############################
-# 
-# function virtualenv_info {
-#     [ $VIRTUAL_ENV ] && echo '('`basename $VIRTUAL_ENV`') '
-# }
-# 
-# function box_name {
-#     [ -f ~/.box-name ] && cat ~/.box-name || hostname -s
-# }
-# 
-# PROMPT='%{$bg[blue]%}%{$fg[white]%}%n@$(hostname)%{$reset_color%}%{$fg[blue]%}%{$bg[gray]%}⮀%{$reset_color%}%{$bg[gray]%} %~ ⮀'
-# 
-# 
-# ZSH_THEME_GIT_PROMPT_PREFIX=" on %{$fg[magenta]%}"
-# ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
-# ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[green]%}!"
-# ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[green]%}?"
-# ZSH_THEME_GIT_PROMPT_CLEAN=""
-# 
-# local return_status="%{$fg[red]%}%(?..⤬)%{$reset_color%}"
-# RPROMPT='${return_status}%{$reset_color%}'
-# 
-##########################
-# End of Prompt Nonsense #
-##########################
-
 ## Python/Virtualenv
 export VIRTUALENV_DISTRIBUTE=true                     # virtualenv should use Distribute instead of legacy setuptools
 export PIP_VIRTUALENV_BASE=$HOME/Projects/Virtualenvs # Centralized location for new virtual environments
