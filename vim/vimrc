@@ -46,13 +46,15 @@ endif
 syntax enable
 colorscheme solarized
 
+" Backup and swap directories
+set backupdir=~/.vim-temp/backup,/tmp
+set directory=~/.vim-temp/swap,/tmp
+
 " Haskell Mode Configuration
 au Bufenter *.hs compiler ghc
 au Bufenter *.hs map <C-\> :GHCi 
 let g:haddock_browser = "open"
 let g:haddock_browser_callformat = "%s %s"
-
-
 
 " Preserve indentation while pasting text from the OS X clipboard
 noremap <leader>p :set paste<CR>:put  *<CR>:set nopaste<CR>

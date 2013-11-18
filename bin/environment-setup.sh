@@ -1,7 +1,12 @@
 #!/bin/bash
 
-SOURCE=${1-$(cd ..; pwd)} # Default to absolute path to parent directory.
-DEST=${2-$HOME}           # Default to home directory.
+# Destination directory defaults to the current working directory.
+DEST=${1-$(pwd)}
+# Source directory defaults to the directory one level up from this script.
+SOURCE=${2-$(cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd)}
+
+echo $DEST
+echo $SOURCE
 
 function maybe_link
 {
@@ -27,12 +32,7 @@ function maybe_mkdir
     fi
 }
 
-FILES="vimrc.before
-vimrc.after
-gvimrc.before
-gvimrc.after
-vim
-janus
+FILES="vim
 oh-my-zsh
 bashrc
 tmux.conf
@@ -47,10 +47,11 @@ do
     maybe_link $THIS_SOURCE $THIS_DEST
 done
 
-# Link .vimrc to Janus vimrc
-maybe_link $SOURCE/vim/janus/vim/vimrc $DEST/.vimrc
-maybe_link $SOURCE/vim/janus/vim/gvimrc $DEST/.gvimrc
+# Link bin directory
+maybe_link $SOURCE/bin $DEST/bin
 
-# Create vim backup/temp dirs.
+# Link vimrc
+maybe_link $SOURCE/vim/vimrc $DEST/.vimrc
+
+# Create vim backup/temp dir.
 maybe_mkdir $DEST/.vim-backup
-maybe_mkdir $DEST/.vim-temp
