@@ -45,6 +45,7 @@ endif
 " Also switch on highlighting the last used search pattern.
 syntax enable
 colorscheme solarized
+set background=dark
 
 " Backup and swap directories
 set backupdir=~/.vim-temp/backup,/tmp
