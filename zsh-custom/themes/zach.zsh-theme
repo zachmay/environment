@@ -63,6 +63,7 @@ prompt_context() {
   local user=`whoami`
 
   if [[ "$user" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
+    #prompt_segment black default "%(!.%{%F{yellow}%}.)$user@%m"
     prompt_segment black default "%(!.%{%F{yellow}%}.)$user@%m"
   fi
 }
@@ -149,11 +150,14 @@ prompt_virtualenv() {
 prompt_status() {
   local symbols
   symbols=()
+
   [[ $RETVAL -ne 0 ]] && symbols+="%{%F{red}%}✘"
   [[ $UID -eq 0 ]] && symbols+="%{%F{yellow}%}⚡"
   [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{cyan}%}⚙"
 
-  [[ -n "$symbols" ]] && prompt_segment black default "$symbols"
+  [[ $symbols = "" ]] && symbols="%{%F{cyan}%}•"
+
+  prompt_segment black default "$symbols"
 }
 
 ## Main prompt
