@@ -38,14 +38,7 @@ function maybe_mkdir
 # Symlink Dotfiles
 ###########################################################
 
-FILES="vim
-bashrc
-tmux.conf
-zshrc
-zsh-custom
-oh-my-zsh
-screenrc
-profile"
+FILES="slate"
 
 for file in $FILES
 do
@@ -54,24 +47,6 @@ do
     maybe_link $THIS_SOURCE $THIS_DEST
 done
 
-# Link bin directory
-maybe_link $SOURCE/bin $DEST/bin
+#########
 
-###########################################################
-# Vim
-###########################################################
-
-# Link vimrc
-maybe_link $SOURCE/vim/vimrc $DEST/.vimrc
-
-# Create vim backup/temp dir.
-maybe_mkdir $DEST/.vim-backup
-
-###########################################################
-# Init and update git submodules
-###########################################################
-
-cd $SOURCE
-git submodule init
-git submodule update
-cd $DEST
+chflags nohidden ~/Library
