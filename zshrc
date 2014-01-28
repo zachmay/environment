@@ -21,13 +21,13 @@ COMPLETION_WAITING_DOTS="true"
 #plugins=(git)
 
 # Customize to your needs...
-CABAL_BIN=/Users/zmay/.cabal/bin
+CABAL_BIN=$HOME/Library/Haskell/bin
 NPM_BIN=/usr/local/share/npm/bin
 GIT_BIN=/usr/local/git/bin
 HOME_BIN=~/bin
 TEX_BIN=/usr/texbin
 
-export PATH=/usr/local/share/python/:/usr/local/bin/:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:$GIT_BIN:$HOME_BIN:$CABAL_BIN:$NPM_BIN:$TEX_BIN
+export PATH=$GIT_BIN:$HOME_BIN:$CABAL_BIN:$NPM_BIN:$TEX_BIN:usr/local/share/python/:/usr/local/bin/:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin
 
 ZSH_CUSTOM=$HOME/.zsh-custom
 ZSH_THEME=zach

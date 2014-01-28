@@ -40,6 +40,7 @@ function maybe_mkdir
 
 FILES="vim
 bashrc
+ghci
 tmux.conf
 zshrc
 zsh-custom
