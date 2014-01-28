@@ -1,11 +1,14 @@
 [user]
 	name = Zachary May
 	email = zach@sector42.net
+[core]
+	filemode = false
+	excludesfile = /home/zmay/.gitingore
 [push]
 	default = current
-[core]
-    filemode = false
-
 [diff]
     tool = vimdiff
-
+[alias]
+    ignore = update-index --assume-unchanged
+    unignore = update-index --no-assume-unchanged
+    ignored = !git ls-files -v | grep "^[[:lower:]]"
