@@ -1,5 +1,16 @@
 #!/bin/bash
 
+if [[ $1 == "--help" ]];
+then
+    echo "Environment setup script:"
+    echo ""
+    echo "environment-setup [DEST [SOURCE]]"
+    echo ""
+    echo "Destination directory defaults to current working directory."
+    echo "Source directory defaults to the directory one level up from this script."
+    exit
+fi
+
 # Destination directory defaults to the current working directory.
 DEST=${1-$(pwd)}
 # Source directory defaults to the directory one level up from this script.
@@ -41,6 +52,7 @@ function maybe_mkdir
 FILES="vim
 bashrc
 ghci
+gitconfig
 tmux.conf
 zshrc
 zsh-custom

@@ -1,0 +1,11 @@
+[user]
+	name = Zachary May
+	email = zach@sector42.net
+[push]
+	default = current
+[core]
+    filemode = false
+
+[diff]
+    tool = vimdiff
+
