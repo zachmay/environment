@@ -2,7 +2,6 @@
 ZSH=$HOME/.oh-my-zsh
 
 export EDITOR="vim"
-bindkey -v
 
 # Options.
 setopt AUTO_CD
@@ -45,3 +44,5 @@ mdx() {
     mkdir -p "$*"
     cd "$*"
 }
+
+bindkey -v
