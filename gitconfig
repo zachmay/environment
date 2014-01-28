@@ -8,7 +8,10 @@
 	default = current
 [diff]
     tool = vimdiff
+[difftool]
+    prompt = false
 [alias]
     ignore = update-index --assume-unchanged
     unignore = update-index --no-assume-unchanged
     ignored = !git ls-files -v | grep "^[[:lower:]]"
+    df = difftool
