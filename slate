@@ -20,14 +20,19 @@ alias bottomleft  move screenOriginX;screenOriginY+screenSizeY/2 screenSizeX/2;s
 alias bottomright move screenOriginX+screenSizeX/2;screenOriginY+screenSizeY/2 screenSizeX/2;screenSizeY/2
 alias maxvert     move windowTopLeftX;screenOriginY windowSizeX;screenSizeY
 
+alias fillSecondary throw 0 resize
+alias bringPrimary throw 1
+
 # Position/Sizing
 bind up:${hyper}       ${maxvert}
 bind left:${hyper}     push left
 bind right:${hyper}    push right
 bind down:${hyper}     ${maxvert}
+bind [:${hyper}        ${lefthalf}
+bind ]:${hyper}        ${righthalf}
 bind 8:${hyper}        ${full}
 bind 9:${hyper}        resize -10% 0
-bind 0:${hyper}        resize +11% 0
+bind 0:${hyper}        resize +10% 0
 # Focus Bindings
 bind l:${hyper}        focus right
 bind h:${hyper}        focus left
@@ -35,7 +40,13 @@ bind j:${hyper}        focus behind
 bind k:${hyper}        focus behind
 # Fast Application Shortcuts
 bind c:${hyper}        focus "Google Chrome"
-bind m:${hyper}        focus "Microsoft Outlook"
+bind o:${hyper}        focus "Microsoft Outlook"
 bind x:${hyper}        focus "iTerm"
+
 # Window Hints
-bind a:${hyper}        hint JKLHMNUIOPYB
+bind `:${hyper}        hint JKLHMNUIOPYB
+
+bind z:${hyper}        undo
+
+bind home:${hyper}     ${fillSecondary}
+bind end:${hyper}      ${bringPrimary}
