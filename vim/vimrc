@@ -5,6 +5,7 @@ if v:lang =~ "utf8$" || v:lang =~ "UTF-8$"
    set fileencodings=utf-8,latin1
 endif
 
+set tabpagemax=100
 set ai                          " always set autoindenting on
 set autoindent
 set backup                      " keep a backup file

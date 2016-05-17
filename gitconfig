@@ -15,3 +15,5 @@
     unignore = update-index --no-assume-unchanged
     ignored = !git ls-files -v | grep "^[[:lower:]]"
     df = difftool
+[url "https://github"]
+	insteadOf = git://github
